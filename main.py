@@ -55,4 +55,6 @@ def submit():
             outcome=f"{temp}"
     return render_template("sub.html",n=outcome,m=status_pred[0])
 if __name__=="__main__":
-    app.run()
+#     app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, port=port)
