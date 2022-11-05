@@ -45,13 +45,14 @@ def submit():
 
         outcome=""
         print(status_pred)
-        temp=status_pred
+        temp=status_pred[1]
+
         if(temp[0]==1):
             outcome="Acquired"
         elif(temp[0]==0):
             outcome="Closed"
         else:
             outcome=f"{temp}"
-    return render_template("sub.html",n=outcome)
+    return render_template("sub.html",n=outcome,m=status_pred[0])
 if __name__=="__main__":
     app.run()
