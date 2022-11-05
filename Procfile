@@ -1,1 +1,1 @@
-web: gunicorn \demo\app:app
+web: gunicorn main:app
