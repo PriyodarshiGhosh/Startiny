@@ -7,9 +7,11 @@ from sklearn import model_selection
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-
+from math import*
+def euclidean_distance(x,y):
+      return sqrt(sum(pow(a-b,2) for a, b in zip(x, y)))
 def prediction(num1, num2, num3,num4,num5,num6, num7, num8, num9, num10, num11, num12, num13, num14, num15, num16, num17, num18, num19, num20, num21,num22,num23,num24,num25,num26):
-    d = pd.read_csv("demo\startup_data.csv")
+    d = pd.read_csv("/Users/priyodarshighosh/Startiny/demo/startup data.csv")
     d['status'] = np.where(d['status'] == 'closed', 0,1)
     d = d.drop(["Unnamed: 0", "Unnamed: 6", "labels","closed_at", "id"], axis = 1)
     d['age_first_milestone_year'] = d['age_first_milestone_year'].fillna(method="ffill")
@@ -21,6 +23,22 @@ def prediction(num1, num2, num3,num4,num5,num6, num7, num8, num9, num10, num11, 
                'funding_total_usd', 'is_software', 'is_mobile', 'is_consulting', 'is_biotech', 'is_web',
                'is_gamesvideo', 'is_othercategory', 'is_TX', 'has_VC', 'is_ecommerce', 'has_angel', 
                'age_first_funding_year']]
+
+    df_main = pd.DataFrame(d)
+#Scale all the value to a sandard value
+    scale= StandardScaler()
+    scaled_data = scale.fit_transform(X)
+
+    X_list =[]
+    for index, rows in X.iterrows():
+      my_list =[rows.milestones, rows.is_top500, rows.has_roundB, rows.funding_rounds, rows.age_last_milestone_year,
+               rows.avg_participants, rows.has_roundA, rows.has_roundC, rows.has_roundD, rows.age_first_milestone_year, 
+                rows.is_enterprise, rows.age_last_funding_year, rows.is_advertising, 
+               rows.funding_total_usd, rows.is_software, rows.is_mobile, rows.is_consulting, rows.is_biotech, rows.is_web,
+               rows.is_gamesvideo, rows.is_othercategory, rows.is_TX, rows.has_VC, rows.is_ecommerce, rows.has_angel, 
+               rows.age_first_funding_year]
+      X_list.append(my_list)
+
 
     # scale= StandardScaler()
     # scaled_data = scale.fit_transform(X)
@@ -58,6 +76,23 @@ def prediction(num1, num2, num3,num4,num5,num6, num7, num8, num9, num10, num11, 
 }
     df = pd.DataFrame([list(data.values())])
     y_pred1 = model.predict(df)
+    
+
+    l = [];
+    for i in range(0,len(X)):
+      d = euclidean_distance(pd.to_numeric(X_list[i]),pd.to_numeric(list(data.values())))
+      l.append(d)
+
+    l1 = []
+    for j in range(0,len(l)):
+      sim = 1/(1+l[j])
+      l1.append(sim)
+  
+    print(max(l1))
+    max_s = max(l1)
+    idx = l1.index(max_s)
+    var = df_main.iloc[idx]['name']
+    print(var)
     # scale = StandardScaler()
     # scaled_data = scale.fit_transform(df)
-    return y_pred1
+    return [var,y_pred1]
