@@ -1,9 +1,11 @@
 from flask import Flask,render_template,request
 import pred as m
 app=Flask(__name__)
+
 @app.route("/")
 def hello():
     return render_template("index.html")
+
 @app.route("/sub",methods=["GET","POST"])
 def submit():
     if request.method=="POST":
@@ -33,18 +35,23 @@ def submit():
         is_ecommerce=request.form["is_ecommerce"]
         has_angel=request.form["has_angel"]
         age_first_funding_year=request.form["age_first_funding_year"]
-        status_pred=m.prediction(milestones, is_top500, has_roundB, funding_rounds, age_last_milestone_year,
+
+        status_pred = m.prediction(milestones, is_top500, has_roundB, funding_rounds, age_last_milestone_year,
                avg_participants, has_roundA, has_roundC, has_roundD, age_first_milestone_year, 
                 is_enterprise, age_last_funding_year, is_advertising, 
                funding_total_usd, is_software, is_mobile, is_consulting, is_biotech, is_web,
                is_gamesvideo, is_othercategory, is_TX, has_VC, is_ecommerce, has_angel, 
                age_first_funding_year)
+
         outcome=""
+        print(status_pred)
         temp=status_pred
         if(temp[0]==1):
-            outcome="success"
+            outcome="Acquired"
+        elif(temp[0]==0):
+            outcome="Closed"
         else:
-            outcome="You need to work more"
+            outcome=f"{temp}"
     return render_template("sub.html",n=outcome)
 if __name__=="__main__":
     app.run()
