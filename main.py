@@ -1,5 +1,6 @@
 from flask import Flask,render_template,request
 import pred as m
+import os
 app=Flask(__name__)
 
 @app.route("/")
@@ -48,13 +49,16 @@ def submit():
         temp=status_pred[1]
 
         if(temp[0]==1):
-            outcome="Acquired"
+            outcome="You're doing great! Keep up the good work."
         elif(temp[0]==0):
-            outcome="Closed"
+            outcome="According to statistics, your startup needs work to achieve more milestones."
         else:
             outcome=f"{temp}"
-    return render_template("sub.html",n=outcome,m=status_pred[0])
+    return render_template("sub.html",n=outcome,match_1=status_pred[0],match_2=status_pred[2],match_3=status_pred[3])
 if __name__=="__main__":
+#     app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, port=port)
 #     app.run()
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=True, port=port)
