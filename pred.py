@@ -87,12 +87,16 @@ def prediction(num1, num2, num3,num4,num5,num6, num7, num8, num9, num10, num11, 
     for j in range(0,len(l)):
       sim = 1/(1+l[j])
       l1.append(sim)
-  
-    print(max(l1))
-    max_s = max(l1)
-    idx = l1.index(max_s)
-    var = df_main.iloc[idx]['name']
-    print(var)
+
+    l1.sort()
+    print(l1)
+    #print(max(l1))
+    #max_s = max(l1)
+    #idx = l1.index(max_s)
+    var1 = df_main.iloc[len(l1)-1]['name']
+    var2 = df_main.iloc[len(l1)-2]['name']
+    var3 = df_main.iloc[len(l1)-3]['name']
+    print(f"{var1}\n{var2}\n{var3}")
     # scale = StandardScaler()
     # scaled_data = scale.fit_transform(df)
-    return [var,y_pred1]
+    return [var1,y_pred1,var2,var3]
